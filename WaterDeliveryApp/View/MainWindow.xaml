@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="560" Width="1000">
+        Title="MainWindow" Height="560" Width="1100">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -23,38 +23,48 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Grid.Row="0">
+                    <ListView Grid.Row="0" ItemsSource="{Binding ViewOrders}" SelectedItem="{Binding SelectedOrder}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="ФИО" Width="160"/>
-                                <GridViewColumn Header="Телефон" Width="100"/>
-                                <GridViewColumn Header="Адрес" Width="180"/>
-                                <GridViewColumn Header="Вода" Width="70"/>
-                                <GridViewColumn Header="Сумма заказа" Width="100"/>
-                                <GridViewColumn Header="Время доставки" Width="100"/>
-                                <GridViewColumn Header="Доставлено" Width="80"/>
+                                <GridViewColumn Header="ФИО" Width="160" DisplayMemberBinding="{Binding Path=FullName}"/>
+                                <GridViewColumn Header="Телефон" Width="100" DisplayMemberBinding="{Binding Path=Phone}"/>
+                                <GridViewColumn Header="Адрес" Width="180" DisplayMemberBinding="{Binding Path=Adress}"/>
+                                <GridViewColumn Header="Вода" Width="70" DisplayMemberBinding="{Binding Path=NameWater}"/>
+                                <GridViewColumn Header="Сумма заказа" Width="100" DisplayMemberBinding="{Binding Path=SumDelivery}"/>
+                                <GridViewColumn Header="Время доставки" Width="100" DisplayMemberBinding="{Binding Path=TimeDelivery}"/>
+                                <GridViewColumn Header="Доставлено" Width="80" DisplayMemberBinding="{Binding Path=isDelivered}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <StackPanel Grid.Column="1" Background="AliceBlue">
-                        <TextBlock Text="Информация о заказе" FontSize="18" FontWeight="Bold"/>
-                        <TextBlock Text="ФИО" FontSize="18"/>
-                        <TextBlock Text="" FontSize="16" Foreground="DarkGray"/>
-                        <TextBlock Text="Телефон" FontSize="18"/>
-                        <TextBlock Text="" FontSize="16" Foreground="DarkGray"/>
-                        <TextBlock Text="Адрес" FontSize="18"/>
-                        <TextBlock Text="" FontSize="16" Foreground="DarkGray"/>
-                        <TextBlock Text="Наименование товара" FontSize="18"/>
-                        <TextBlock Text="" FontSize="16" Foreground="DarkGray"/>
-                        <TextBlock Text="Сумма заказа" FontSize="18"/>
-                        <TextBlock Text="" FontSize="16" Foreground="DarkGray"/>
-                        <TextBlock Text="Время доставки" FontSize="18"/>
-                        <TextBlock Text="" FontSize="16" Foreground="DarkGray"/>
-                        <TextBlock Text="Доставлено?" FontSize="18"/>
-                        <CheckBox Content="Доставлено" FontSize="18"/>
-                    </StackPanel>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Margin="5" Background="AliceBlue" DataContext="{Binding SelectedOrder}">
+                            <TextBlock Text="Информация о заказе" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="ФИО" FontSize="18"/>
+                            <TextBlock Text="{Binding FullName}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Телефон" FontSize="18"/>
+                            <TextBlock Text="{Binding Phone}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Адрес" FontSize="18"/>
+                            <TextBlock Text="{Binding Adress}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Наименование товара" FontSize="18"/>
+                            <TextBlock Text="{Binding NameWater}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Сумма заказа" FontSize="18"/>
+                            <TextBlock Text="{Binding SumDelivery}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Время доставки" FontSize="18"/>
+                            <TextBlock Text="{Binding TimeDelivery}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Доставлено?" FontSize="18"/>
+                            <CheckBox IsChecked="{Binding isDelivered}" Content="Доставлено" FontSize="18"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <Button Content="Редактировать" FontSize="16" Margin="10"
+                                    Command="{Binding EditOrderWnd}"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Name="Clients" Width="180">
@@ -64,19 +74,42 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView>
+                    <ListView ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="ФИО" Width="250"/>
-                                <GridViewColumn Header="Телефон" Width="100"/>
-                                <GridViewColumn Header="Адрес" Width="200"/>
-                                <GridViewColumn Header="Активных заказов" Width="120"/>
-                                <GridViewColumn Header="Заказов" Width="120"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=FullName}" Header="ФИО" Width="250"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Phone}" Header="Телефон" Width="100"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Adress}" Header="Адрес" Width="200"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=ActiveOrdersCount}" Header="Активных заказов" Width="120"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=OrdersCount}" Header="Заказов" Width="120"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Row="0" Margin="5" Background="AliceBlue" DataContext="{Binding SelectedClient}">
+                            <TextBlock Text="Информация о клиенте" FontSize="17" FontWeight="Bold"/>
+                            <TextBlock Text="ФИО" FontSize="18"/>
+                            <TextBlock Text="{Binding FullName}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Телефон" FontSize="18"/>
+                            <TextBlock Text="{Binding Phone}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Адрес" FontSize="18"/>
+                            <TextBlock Text="{Binding Adress}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Активных заказов" FontSize="18"/>
+                            <TextBlock Text="{Binding ActiveOrdersCount}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Заказов" FontSize="18"/>
+                            <TextBlock Text="{Binding OrdersCount}" FontSize="16" Foreground="DarkGray"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <Button Content="Редактировать" FontSize="16" Margin="10"
+                                    Command="{Binding EditClientWnd}"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </TabItem>
             <TabItem Name="WaterTypes" Width="180">
@@ -86,23 +119,47 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView>
+                    <ListView ItemsSource="{Binding WaterTypes}" SelectedItem="{Binding SelectedWater}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Наименование" Width="150"/>
-                                <GridViewColumn Header="Стоимость" Width="100"/>
-                                <GridViewColumn Header="Описание" Width="550"/>
+                                <GridViewColumn Header="Наименование" Width="150" DisplayMemberBinding="{Binding Path=Name}"/>
+                                <GridViewColumn Header="Стоимость" Width="100" DisplayMemberBinding="{Binding Path=Cost}"/>
+                                <GridViewColumn Header="Описание" Width="550" DisplayMemberBinding="{Binding Path=Description}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="40"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Background="AliceBlue" DataContext="{Binding SelectedWater}">
+                            <TextBlock Text="Информация о товаре" FontSize="18" FontWeight="Bold"/>
+                            <TextBlock Text="Наименование" FontSize="18"/>
+                            <TextBlock Text="{Binding Name}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Стоимость" FontSize="18"/>
+                            <TextBlock Text="{Binding Cost}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="Описание" FontSize="18"/>
+                            <TextBlock Text="{Binding Description}" FontSize="16" Foreground="DarkGray"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="1">
+                            <Button Content="Редактировать" FontSize="16" Margin="10"
+                                    Command="{Binding EditWaterWnd}"/>
+                        </StackPanel>
+                    </Grid>
+                    
                 </Grid>
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Background="AliceBlue">
-            <Button Content="Создать" Margin="20, 10" Width="100"/>
-
+            <Button Content="Создать заказ" Margin="5, 5" Width="150" FontSize="16"
+                    Command="{Binding AddOrderWnd}"/>
+            <Button Content="Создать клиента" Margin="5, 5" Width="150" FontSize="16"
+                    Command="{Binding AddClientWnd}"/>
+            <Button Content="Создать товар" Margin="5, 5" Width="150" FontSize="16"
+                    Command="{Binding AddWaterWnd}"/>
         </StackPanel>
     </Grid>
 </Window>

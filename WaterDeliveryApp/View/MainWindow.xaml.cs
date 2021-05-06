@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WaterDeliveryApp.ViewModelPath;
 
 namespace WaterDeliveryApp
 {
@@ -23,6 +24,7 @@ namespace WaterDeliveryApp
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel();
         }
     }
 }

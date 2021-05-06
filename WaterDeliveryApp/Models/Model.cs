@@ -15,6 +15,17 @@ namespace WaterDeliveryApp.Domain
         public string Patronymic { get; set; }
         public string Phone { get; set; }
         public string Adress { get; set; }
+        public int ActiveOrdersCount { get; set; }
+        public int OrdersCount { get; set; }
+
+        private string _fullName;
+
+        public string FullName
+        {
+            get { return _fullName; }
+            set { _fullName = LastName + " " + FirstName + " " + Patronymic; }
+        }
+
 
         public Clients(string firstName, string lastName, string patronymic, string phone, string adress)
         {
@@ -30,7 +41,7 @@ namespace WaterDeliveryApp.Domain
     {
         public int WaterTypeId { get; set; }
         public string Name { get; set; }
-        public decimal Coast { get; set; }
+        public decimal Cost { get; set; }
         public string Description { get; set; }
     }
 
@@ -49,5 +60,16 @@ namespace WaterDeliveryApp.Domain
         public int OrderId { get; set; }
         public int WaterTypeId { get; set; }
         public int Count { get; set; }
+    }
+
+    public class ViewOrders
+    {
+        public string FullName { get; set; }
+        public string Phone { get; set; }
+        public string Adress { get; set; }
+        public string NameWater { get; set; }
+        public decimal SumDelivery { get; set; }
+        public DateTime DeliveryTime { get; set; }
+        public bool isDelivered { get; set; }
     }
 }
