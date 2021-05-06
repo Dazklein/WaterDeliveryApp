@@ -26,7 +26,10 @@ namespace WaterDeliveryApp.Domain
             set { _fullName = LastName + " " + FirstName + " " + Patronymic; }
         }
 
+        public Clients()
+        {
 
+        }
         public Clients(string firstName, string lastName, string patronymic, string phone, string adress)
         {
             FirstName = firstName;
