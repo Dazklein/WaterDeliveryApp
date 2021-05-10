@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WaterDeliveryApp"
+        xmlns:local="clr-namespace:WaterDeliveryApp" xmlns:viewmodelpath="clr-namespace:WaterDeliveryApp.ViewModelPath" d:DataContext="{d:DesignInstance Type=viewmodelpath:ViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="560" Width="1100">
     <Grid>
@@ -25,7 +25,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView Grid.Row="0" ItemsSource="{Binding ViewOrders}" SelectedItem="{Binding SelectedOrder}">
+                    <ListView x:Name="OrderListView" Grid.Row="0" ItemsSource="{Binding ViewOrders}" SelectedItem="{Binding SelectedOrder}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="ФИО" Width="160" DisplayMemberBinding="{Binding Path=FullName}"/>
@@ -56,7 +56,7 @@
                             <TextBlock Text="Сумма заказа" FontSize="18"/>
                             <TextBlock Text="{Binding SumDelivery}" FontSize="16" Foreground="DarkGray"/>
                             <TextBlock Text="Время доставки" FontSize="18"/>
-                            <TextBlock Text="{Binding TimeDelivery}" FontSize="16" Foreground="DarkGray"/>
+                            <TextBlock Text="{Binding DeliveryTime}" FontSize="16" Foreground="DarkGray"/>
                             <TextBlock Text="Доставлено?" FontSize="18"/>
                             <CheckBox IsChecked="{Binding isDelivered}" Content="Доставлено" FontSize="18"/>
                         </StackPanel>
@@ -76,7 +76,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}">
+                    <ListView x:Name="ClientListView" ItemsSource="{Binding Clients}" SelectedItem="{Binding SelectedClient}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn DisplayMemberBinding="{Binding Path=FullName}" Header="ФИО" Width="250"/>
@@ -121,7 +121,7 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView ItemsSource="{Binding WaterTypes}" SelectedItem="{Binding SelectedWater}">
+                    <ListView x:Name="WaterTypeListView" ItemsSource="{Binding WaterTypes}" SelectedItem="{Binding SelectedWater}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Наименование" Width="150" DisplayMemberBinding="{Binding Path=Name}"/>
@@ -146,7 +146,7 @@
                         </StackPanel>
                         <StackPanel Grid.Row="1">
                             <Button Content="Редактировать" FontSize="16" Margin="10"
-                                    Command="{Binding EditWaterWnd}"/>
+                                    Command="{Binding EditWaterTypeWnd}"/>
                         </StackPanel>
                     </Grid>
                     
@@ -159,7 +159,7 @@
             <Button Content="Создать клиента" Margin="5, 5" Width="150" FontSize="16"
                     Command="{Binding AddClientWnd}"/>
             <Button Content="Создать товар" Margin="5, 5" Width="150" FontSize="16"
-                    Command="{Binding AddWaterWnd}"/>
+                    Command="{Binding AddWaterTypeWnd}"/>
         </StackPanel>
     </Grid>
 </Window>

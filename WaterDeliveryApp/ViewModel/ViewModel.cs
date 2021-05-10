@@ -5,8 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using WaterDeliveryApp.Domain;
 using WaterDeliveryApp.Models;
+using WaterDeliveryApp.View;
 
 namespace WaterDeliveryApp.ViewModelPath
 {
@@ -18,8 +21,8 @@ namespace WaterDeliveryApp.ViewModelPath
         }
 
         public static Clients Client { get; set; }
-        public static Orders Orders { get; set; }
-        public static WaterTypes WaterTypes { get; set; }
+        public static Orders Order { get; set; }
+        public static WaterTypes WaterType { get; set; }
         public static Clients SelectedClient { get; set; }
         private List<Clients> _clients = Data.GetClients();
 
@@ -46,7 +49,7 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
-        public static Orders SelectedOrder { get; set; }
+        public static ViewOrders SelectedOrder { get; set; }
         private List<ViewOrders> _viewOrders = Data.GetViewOrders();
 
         public List<ViewOrders> ViewOrders
@@ -101,7 +104,6 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
         
-        // Редактирование
         private RelayCommand _editClientWnd;
 
         public RelayCommand EditClientWnd
@@ -141,10 +143,47 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
+        private void AddClientWndMethod()
+        {
+            CreateNewClient createNewClient = new CreateNewClient();
+            SetCenterPositionAndOpen(createNewClient);
+        }
+
+        private void AddOrderWndMethod()
+        {
+            CreateNewOrder createNewOrder = new CreateNewOrder();
+            SetCenterPositionAndOpen(createNewOrder);
+        }
+
+        private void AddWaterTypeWndMethod()
+        {
+            CreateNewTypeWater createNewTypeWater = new CreateNewTypeWater();
+            SetCenterPositionAndOpen(createNewTypeWater);
+        }
+
+        private void EditClientWndMethod()
+        {
+            EditClient editClient = new EditClient();
+            SetCenterPositionAndOpen(editClient);
+        }
+
+        private void EditOrderWndMethod()
+        {
+            EditOrder editOrder = new EditOrder();
+            SetCenterPositionAndOpen(editOrder);
+        }
+
+        private void EditWaterTypeWndMethod()
+        {
+            EditTypeWater editTypeWater = new EditTypeWater();
+            SetCenterPositionAndOpen(editTypeWater);
+        }
+
         #endregion
 
         #region Команды действий
 
+        // Создание клиента
         private RelayCommand _addClient;
 
         public RelayCommand AddClient
@@ -176,7 +215,7 @@ namespace WaterDeliveryApp.ViewModelPath
                     {
 
                         resultStr = Data.AddClient(Client);
-                        UpdateNomenclatureView();
+                        UpdateView();
 
                         ShowMessage(resultStr);
                         SetNullValuesToProperties();
@@ -186,8 +225,119 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
+        //Создание заказа
+        private RelayCommand _addOrder;
+
+        public RelayCommand AddOrder
+        {
+            get {
+                return _addOrder ?? new RelayCommand(obj =>
+                {
+                    
+                }); 
+            }
+        }
+
+        //Создание товара
+        private RelayCommand _addWaterType;
+
+        public RelayCommand AddWaterType
+        {
+            get
+            {
+                return _addWaterType ?? new RelayCommand(obj =>
+                {
+
+                });
+            }
+        }
+
+        //Редактирование клиента
+        private RelayCommand _editClient;
+
+        public RelayCommand EditClient
+        {
+            get
+            {
+                return _editClient ?? new RelayCommand(obj =>
+                {
+                    Window wnd = obj as Window;
+                    Clients client = Client;
+                    string resultStr = "";
+                    bool isValid = true;
+                    if (Client.LastName == null || Client.LastName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "NameBlock");
+                        isValid = false;
+                    }
+                    if (Client.Phone == null || Client.Phone.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "PriceBlock");
+                        isValid = false;
+                    }
+                    if (Client.Adress == null || Client.Adress.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "PriceBlock");
+                        isValid = false;
+                    }
+                    if (isValid)
+                    {
+
+                        resultStr = Data.AddClient(Client);
+                        UpdateView();
+
+                        ShowMessage(resultStr);
+                        SetNullValuesToProperties();
+                        wnd.Close();
+                    }
+                });
+            }
+        }
+
+        //Редактирование заказа
+        private RelayCommand _editOrder;
+
+        public RelayCommand EditOrder
+        {
+            get
+            {
+                return _editOrder ?? new RelayCommand(obj =>
+                {
+
+                });
+            }
+        }
+
+        //Редактирование товара
+        private RelayCommand _editWaterType;
+
+        public RelayCommand EditWaterType
+        {
+            get
+            {
+                return _editWaterType ?? new RelayCommand(obj =>
+                {
+
+                });
+            }
+        }
 
         #endregion
+
+        private RelayCommand _closeWindow;
+
+        public RelayCommand CloseWindow
+        {
+            get 
+            {
+                return _closeWindow ?? new RelayCommand(obj =>
+                {
+                    Window wnd = obj as Window;
+                    wnd.Close();
+                }); 
+            }
+        }
+
 
         private void SetNullValuesToProperties()
         {
@@ -199,16 +349,56 @@ namespace WaterDeliveryApp.ViewModelPath
             Client.OrdersCount = 0;
             Client.Patronymic = "";
             Client.Phone = "";
-            
+
+            Order.ClientId = 0;
+            Order.DeliveryTime = DateTime.Now;
+            Order.IsDelivered = false;
+            Order.OrderId = 0;
+
+            WaterType.Cost = 0;
+            WaterType.Description = "";
+            WaterType.Name = "";
+            WaterType.WaterTypeId = 0;
         }
 
-        private void UpdateNomenclatureView()
+        private void UpdateView()
         {
-            AllNomenclature = DataWorker.Sel_nomenclature();
-            MainWindow.AllNomenclatureView.ItemsSource = null;
-            MainWindow.AllNomenclatureView.Items.Clear();
-            MainWindow.AllNomenclatureView.ItemsSource = AllNomenclature;
-            MainWindow.AllNomenclatureView.Items.Refresh();
+            ViewOrders = Data.GetViewOrders();
+            MainWindow.OrdersListView.ItemsSource = null;
+            MainWindow.OrdersListView.Items.Clear();
+            MainWindow.OrdersListView.ItemsSource = ViewOrders;
+            MainWindow.OrdersListView.Items.Refresh();
+
+            Clients = Data.GetClients();
+            MainWindow.ClientsListView.ItemsSource = null;
+            MainWindow.ClientsListView.Items.Clear();
+            MainWindow.ClientsListView.ItemsSource = Clients;
+            MainWindow.ClientsListView.Items.Refresh();
+
+            WaterTypes = Data.GetWaterTypes();
+            MainWindow.WaterTypesListView.ItemsSource = null;
+            MainWindow.WaterTypesListView.Items.Clear();
+            MainWindow.WaterTypesListView.ItemsSource = WaterTypes;
+            MainWindow.WaterTypesListView.Items.Refresh();
+        }
+
+        private void SetRedBlockControll(Window wnd, string blockName)
+        {
+            Control block = wnd.FindName(blockName) as Control;
+            block.BorderBrush = Brushes.Red;
+        }
+
+        private void SetCenterPositionAndOpen(Window window)
+        {
+            window.Owner = Application.Current.MainWindow;
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            window.ShowDialog();
+        }
+
+        private void ShowMessage(string message)
+        {
+            MessageWindow messageView = new MessageWindow(message);
+            SetCenterPositionAndOpen(messageView);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

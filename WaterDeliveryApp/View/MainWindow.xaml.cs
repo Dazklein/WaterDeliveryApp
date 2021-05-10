@@ -21,10 +21,16 @@ namespace WaterDeliveryApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static ListView ClientsListView;
+        public static ListView OrdersListView;
+        public static ListView WaterTypesListView;
         public MainWindow()
         {
             InitializeComponent();
             DataContext = new ViewModel();
+            ClientsListView = ClientListView;
+            OrdersListView = OrderListView;
+            WaterTypesListView = WaterTypeListView;
         }
     }
 }

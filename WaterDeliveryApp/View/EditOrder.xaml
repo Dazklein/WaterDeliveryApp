@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp.View"
         mc:Ignorable="d"
-        Title="EditOrder" Height="400" Width="300">
+        Title="Редактирование заказа" MinHeight="300" MinWidth="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -13,23 +13,32 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Background="LightSkyBlue">
-            <TextBlock Text="Создание записи" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold"/>
+            <TextBlock Text="Формирование заказа" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0, 5"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10, 10">
-            <TextBlock Text="Фамилия" FontSize="16"/>
-            <TextBox FontSize="16" />
-            <TextBlock Text="Имя" FontSize="16"/>
-            <TextBox FontSize="16" />
-            <TextBlock Text="Отчество" FontSize="16"/>
-            <TextBox FontSize="16" />
-            <TextBlock Text="Телефон" FontSize="16"/>
-            <TextBox FontSize="16" />
-            <TextBlock Text="Адрес" FontSize="16"/>
-            <TextBox FontSize="16" />
+            <TextBlock Text="Клиент" FontSize="16"/>
+            <ComboBox FontSize="16" />
+            <TextBlock Text="Время доставки" FontSize="16"/>
+            <DatePicker FontSize="16" />
+            <StackPanel Orientation="Horizontal" Background="#eeff" Margin="0, 10">
+                <Button Width="30" Height="30" HorizontalAlignment="Left">
+                    <Path Data="M0.5,0 L0.5,1 M0,0.5 L1,0.5"
+                      StrokeThickness="6"
+                      Stretch="Fill"
+                      Stroke="DarkSlateGray" />
+                </Button>
+                <TextBlock Text="Список товаров" FontSize="20" Margin="10, 0"/>
+            </StackPanel>
+
+
         </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Content="Добавить" Margin="5, 5" Width="140"/>
-            <Button Content="Отмена" Margin="5, 5" Width="140"/>
-        </StackPanel>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Добавить" Margin="5"/>
+            <Button Grid.Column="1" Content="Отмена" Margin="5"/>
+        </Grid>
     </Grid>
 </Window>
