@@ -17,15 +17,15 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10, 10" DataContext="{Binding SelectedClient}">
             <TextBlock Text="Фамилия" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding LastName}"/>
+            <TextBox Name="LastName" FontSize="16" Text="{Binding LastName}"/>
             <TextBlock Text="Имя" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding FirstName}"/>
+            <TextBox Name="FirstName" FontSize="16" Text="{Binding FirstName}"/>
             <TextBlock Text="Отчество" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Patronymic}"/>
+            <TextBox Name="Patronymic" FontSize="16" Text="{Binding Patronymic}"/>
             <TextBlock Text="Телефон" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Phone}"/>
+            <TextBox Name="Phone" FontSize="16" Text="{Binding Phone}"/>
             <TextBlock Text="Адрес" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Adress}"/>
+            <TextBox Name="Adress" FontSize="16" Text="{Binding Adress}"/>
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

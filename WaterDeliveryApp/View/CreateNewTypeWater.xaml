@@ -17,11 +17,11 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10, 10" DataContext="{Binding WaterType}">
             <TextBlock Text="Наименование" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Name}"/>
+            <TextBox Name="Name" FontSize="16" Text="{Binding Name}"/>
             <TextBlock Text="Цена" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Cost}"/>
+            <TextBox Name="Cost" FontSize="16" Text="{Binding Cost}"/>
             <TextBlock Text="Описание" FontSize="16"/>
-            <TextBox FontSize="16" MinHeight="100" Text="{Binding Description}"/>
+            <TextBox Name="Description" FontSize="16" MinHeight="100" Text="{Binding Description}"/>
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -31,7 +31,7 @@
             <Button Grid.Column="0" Content="Добавить" Margin="5"
                     Command="{Binding AddWaterType}"/>
             <Button Grid.Column="1" Content="Отмена" Margin="5"
-                    Command="{Binding CloseWindow}/>
+                    Command="{Binding CloseWindow}"/>
         </Grid>
     </Grid>
 </Window>

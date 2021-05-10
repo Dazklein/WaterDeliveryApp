@@ -19,9 +19,15 @@ namespace WaterDeliveryApp.View
     /// </summary>
     public partial class MessageWindow : Window
     {
-        public MessageWindow()
+        public MessageWindow(string message)
         {
             InitializeComponent();
+            MessageText.Text = message;
+        }
+
+        private void OK_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

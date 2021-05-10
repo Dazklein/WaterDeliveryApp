@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace WaterDeliveryApp.Domain
 {
     public class Clients
     {
+        [Key]
         public int ClientId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -42,6 +44,7 @@ namespace WaterDeliveryApp.Domain
 
     public class WaterTypes
     {
+        [Key]
         public int WaterTypeId { get; set; }
         public string Name { get; set; }
         public decimal Cost { get; set; }
@@ -50,6 +53,7 @@ namespace WaterDeliveryApp.Domain
 
     public class Orders
     {
+        [Key]
         public int OrderId { get; set; }
         public int ClientId { get; set; }
         public DateTime DeliveryTime { get; set; }
@@ -59,10 +63,20 @@ namespace WaterDeliveryApp.Domain
 
     public class OrderWater
     {
+        [Key]
         public int OrderWaterId { get; set; }
         public int OrderId { get; set; }
         public int WaterTypeId { get; set; }
         public int Count { get; set; }
+    }
+
+    public class WaterList
+    {
+
+        public int OrderId { get; set; }
+        public int WaterTypeId { get; set; }
+        public int Count { get; set; }
+        public int IsAddToOrder { get; set; }
     }
 
     public class ViewOrders

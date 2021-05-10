@@ -141,39 +141,129 @@ namespace WaterDeliveryApp.Models
             }
             catch (Exception)
             {
-                return 0;
+                throw;
             }
         }
 
-        public static void AddOrderWaterRelation(List<OrderWater> orderWaters)
+        public static string AddOrderWaterRelation(List<OrderWater> orderWaters)
         {
             try
             {
                 using (ApplicationDBContext db = new ApplicationDBContext())
                 {
-
+                    db.OrderWaters.AddRange(orderWaters);
+                    db.SaveChanges();
+                    return "Успех";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return ex.Message;
             }
         }
 
-        public static void EditClient(Clients client)
+        public static string EditClient(Clients client)
         {
             try
             {
                 using (ApplicationDBContext db = new ApplicationDBContext())
                 {
-                    
+                    db.Clients.Update(client);
+                    db.SaveChanges();
+                    return "Успех";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                return ex.Message;
+            }
+        }
 
-                throw;
+        public static string EditOrder(Orders order)
+        {
+            try
+            {
+                using (ApplicationDBContext db = new ApplicationDBContext())
+                {
+                    db.Orders.Update(order);
+                    db.SaveChanges();
+                    return "Успех";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static string EditWaterType(WaterTypes waterType)
+        {
+            try
+            {
+                using (ApplicationDBContext db = new ApplicationDBContext())
+                {
+                    db.WaterTypes.Update(waterType);
+                    db.SaveChanges();
+                    return "Успех";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static string DeleteClient(Clients client)
+        {
+            try
+            {
+                using (ApplicationDBContext db = new ApplicationDBContext())
+                {
+                    db.Clients.Remove(client);
+                    db.SaveChanges();
+                    return "Успех";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static string DeleteOrder(Orders order)
+        {
+            try
+            {
+                using (ApplicationDBContext db = new ApplicationDBContext())
+                {
+                    List<OrderWater> orderWater = db.OrderWaters.Where(x => x.OrderId == order.OrderId).ToList();
+                    db.OrderWaters.RemoveRange(orderWater);
+                    db.Orders.Remove(order);
+                    db.SaveChanges();
+                    return "Успех";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public static string DeleteWaterType(WaterTypes waterType)
+        {
+            try
+            {
+                using (ApplicationDBContext db = new ApplicationDBContext())
+                {
+                    db.WaterTypes.Remove(waterType);
+                    db.SaveChanges();
+                    return "Успех";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
     }

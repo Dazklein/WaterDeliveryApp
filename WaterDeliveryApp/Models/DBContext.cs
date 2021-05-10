@@ -14,15 +14,19 @@ namespace WaterDeliveryApp.Domain
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderWater> OrderWaters { get; set; }
 
-        string connectionString = "Host=localhost;Port=5432;Database=WaterDeliveryDB;Username=postgres;Password=adminpassword";
-        protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
+        public ApplicationDBContext()
         {
-            optionBuilder.UseNpgsql(connectionString);
+            Database.EnsureCreated();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=UseresDB;Trusted_Connection=True;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            
         }
     }
 }

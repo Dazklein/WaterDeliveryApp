@@ -16,14 +16,16 @@ using WaterDeliveryApp.ViewModelPath;
 namespace WaterDeliveryApp.View
 {
     /// <summary>
-    /// Логика взаимодействия для EditTypeWater.xaml
+    /// Логика взаимодействия для WaterTypeList.xaml
     /// </summary>
-    public partial class EditTypeWater : Window
+    public partial class WaterTypeList : Window
     {
-        public EditTypeWater()
+        public static ListView WaterTypesListView;
+        public WaterTypeList()
         {
             InitializeComponent();
             DataContext = new ViewModel();
+            WaterTypesListView = WaterTypeListView;
         }
     }
 }

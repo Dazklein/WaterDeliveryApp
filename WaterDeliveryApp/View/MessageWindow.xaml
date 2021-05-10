@@ -12,10 +12,11 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-            <TextBlock Text="" Margin="10" Height="80"/>
+            <TextBlock x:Name="MessageText" Text="" Margin="10" Height="80"/>
         </StackPanel>
         <StackPanel Grid.Row="1">
-            <Button Content="Ок" Height="20" Margin="50, 10"/>
+            <Button Content="ОК" Height="20" Margin="50, 10"
+                    Click="OK_Click"/>
         </StackPanel>
     </Grid>
 </Window>

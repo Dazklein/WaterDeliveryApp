@@ -20,7 +20,23 @@ namespace WaterDeliveryApp.ViewModelPath
 
         }
 
+        public static List<WaterList>  WaterList { get; set; }
+
         public static Clients Client { get; set; }
+
+        /*private Clients _client;
+        public Clients Client 
+        {
+            get 
+            {
+                return _client;
+            }
+            set
+            {
+                _client = value;
+                NotifyPropertyChanged("Client");
+            }
+        }*/
         public static Orders Order { get; set; }
         public static WaterTypes WaterType { get; set; }
         public static Clients SelectedClient { get; set; }
@@ -193,22 +209,31 @@ namespace WaterDeliveryApp.ViewModelPath
                 return _addClient ?? new RelayCommand(obj =>
                 {
                     Window wnd = obj as Window;
-                    Clients client = Client;
                     string resultStr = "";
                     bool isValid = true;
                     if (Client.LastName == null || Client.LastName.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControll(wnd, "NameBlock");
+                        SetRedBlockControll(wnd, "LastName");
+                        isValid = false;
+                    }
+                    if (Client.FirstName == null || Client.FirstName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "FirstName");
+                        isValid = false;
+                    }
+                    if (Client.Patronymic == null || Client.Patronymic.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "Patronymic");
                         isValid = false;
                     }
                     if (Client.Phone == null || Client.Phone.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControll(wnd, "PriceBlock");
+                        SetRedBlockControll(wnd, "Phone");
                         isValid = false;
                     }
                     if (Client.Adress == null || Client.Adress.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControll(wnd, "PriceBlock");
+                        SetRedBlockControll(wnd, "Adress");
                         isValid = false;
                     }
                     if (isValid)
@@ -233,7 +258,20 @@ namespace WaterDeliveryApp.ViewModelPath
             get {
                 return _addOrder ?? new RelayCommand(obj =>
                 {
-                    
+                    Window wnd = obj as Window;
+                    int resultStr;
+                    bool isValid = true;
+                    ///////////////////
+                    if (isValid)
+                    {
+
+                        resultStr = Data.AddOrder(Order);
+                        UpdateView();
+
+                        ShowMessage(resultStr.ToString());
+                        SetNullValuesToProperties();
+                        wnd.Close();
+                    }
                 }); 
             }
         }
@@ -247,7 +285,34 @@ namespace WaterDeliveryApp.ViewModelPath
             {
                 return _addWaterType ?? new RelayCommand(obj =>
                 {
+                    Window wnd = obj as Window;
+                    string resultStr = "";
+                    bool isValid = true;
+                    if (WaterType.Name == null || WaterType.Name.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "Name");
+                        isValid = false;
+                    }
+                    /*if (WaterType.Cost == 0 || WaterType.Cost.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "FirstName");
+                        isValid = false;
+                    }*/
+                    if (WaterType.Description == null || WaterType.Description.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "Description");
+                        isValid = false;
+                    }
+                    if (isValid)
+                    {
 
+                        resultStr = Data.AddWaterType(WaterType);
+                        UpdateView();
+
+                        ShowMessage(resultStr);
+                        SetNullValuesToProperties();
+                        wnd.Close();
+                    }
                 });
             }
         }
@@ -262,28 +327,37 @@ namespace WaterDeliveryApp.ViewModelPath
                 return _editClient ?? new RelayCommand(obj =>
                 {
                     Window wnd = obj as Window;
-                    Clients client = Client;
                     string resultStr = "";
                     bool isValid = true;
                     if (Client.LastName == null || Client.LastName.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControll(wnd, "NameBlock");
+                        SetRedBlockControll(wnd, "LastName");
+                        isValid = false;
+                    }
+                    if (Client.FirstName == null || Client.FirstName.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "FirstName");
+                        isValid = false;
+                    }
+                    if (Client.Patronymic == null || Client.Patronymic.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "Patronymic");
                         isValid = false;
                     }
                     if (Client.Phone == null || Client.Phone.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControll(wnd, "PriceBlock");
+                        SetRedBlockControll(wnd, "Phone");
                         isValid = false;
                     }
                     if (Client.Adress == null || Client.Adress.Replace(" ", "").Length == 0)
                     {
-                        SetRedBlockControll(wnd, "PriceBlock");
+                        SetRedBlockControll(wnd, "Adress");
                         isValid = false;
                     }
                     if (isValid)
                     {
 
-                        resultStr = Data.AddClient(Client);
+                        resultStr = Data.EditClient(Client);
                         UpdateView();
 
                         ShowMessage(resultStr);
@@ -303,7 +377,20 @@ namespace WaterDeliveryApp.ViewModelPath
             {
                 return _editOrder ?? new RelayCommand(obj =>
                 {
+                    Window wnd = obj as Window;
+                    string resultStr = "";
+                    bool isValid = true;
+                    ///////////////////
+                    if (isValid)
+                    {
 
+                        resultStr = Data.EditOrder(Order);
+                        UpdateView();
+
+                        ShowMessage(resultStr);
+                        SetNullValuesToProperties();
+                        wnd.Close();
+                    }
                 });
             }
         }
@@ -317,7 +404,33 @@ namespace WaterDeliveryApp.ViewModelPath
             {
                 return _editWaterType ?? new RelayCommand(obj =>
                 {
+                    Window wnd = obj as Window;
+                    string resultStr = "";
+                    bool isValid = true;
+                    if (WaterType.Name == null || WaterType.Name.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "Name");
+                        isValid = false;
+                    }
+                    /*if (WaterType.Cost == 0 || WaterType.Cost.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "FirstName");
+                        isValid = false;
+                    }*/
+                    if (WaterType.Description == null || WaterType.Description.Replace(" ", "").Length == 0)
+                    {
+                        SetRedBlockControll(wnd, "Description");
+                        isValid = false;
+                    }
+                    if (isValid)
+                    {
+                        resultStr = Data.EditWaterType(WaterType);
+                        UpdateView();
 
+                        ShowMessage(resultStr);
+                        SetNullValuesToProperties();
+                        wnd.Close();
+                    }
                 });
             }
         }
@@ -337,7 +450,6 @@ namespace WaterDeliveryApp.ViewModelPath
                 }); 
             }
         }
-
 
         private void SetNullValuesToProperties()
         {
