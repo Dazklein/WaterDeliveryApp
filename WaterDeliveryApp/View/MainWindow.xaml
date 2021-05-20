@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp" xmlns:viewmodelpath="clr-namespace:WaterDeliveryApp.ViewModelPath" d:DataContext="{d:DesignInstance Type=viewmodelpath:ViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="560" Width="1100">
+        Title="Учет доставки воды" Height="560" Width="1100" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -18,7 +18,7 @@
         <TabControl Grid.Row="1">
             <TabItem Name="Orders" Width="180">
                 <TabItem.Header>
-                    <TextBox Text="Заказы"/>
+                    <TextBlock Text="Заказы"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -33,7 +33,7 @@
                                 <GridViewColumn Header="Адрес" Width="180" DisplayMemberBinding="{Binding Path=Adress}"/>
                                 <GridViewColumn Header="Вода" Width="70" DisplayMemberBinding="{Binding Path=NameWater}"/>
                                 <GridViewColumn Header="Сумма заказа" Width="100" DisplayMemberBinding="{Binding Path=SumDelivery}"/>
-                                <GridViewColumn Header="Время доставки" Width="100" DisplayMemberBinding="{Binding Path=TimeDelivery}"/>
+                                <GridViewColumn Header="Время доставки" Width="100" DisplayMemberBinding="{Binding Path=DeliveryTime}"/>
                                 <GridViewColumn Header="Доставлено" Width="80" DisplayMemberBinding="{Binding Path=isDelivered}"/>
                             </GridView>
                         </ListView.View>
@@ -60,16 +60,12 @@
                             <TextBlock Text="Доставлено?" FontSize="18"/>
                             <CheckBox IsChecked="{Binding isDelivered}" Content="Доставлено" FontSize="18"/>
                         </StackPanel>
-                        <StackPanel Grid.Row="1">
-                            <Button Content="Редактировать" FontSize="16" Margin="10"
-                                    Command="{Binding EditOrderWnd}"/>
-                        </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Name="Clients" Width="180">
                 <TabItem.Header>
-                    <TextBox Text="Клиенты"/>
+                    <TextBlock Text="Клиенты"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -93,7 +89,7 @@
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="0" Margin="5" Background="AliceBlue" DataContext="{Binding SelectedClient}">
-                            <TextBlock Text="Информация о клиенте" FontSize="17" FontWeight="Bold"/>
+                            <TextBlock Text="Информация о клиенте" FontSize="18" FontWeight="Bold"/>
                             <TextBlock Text="ФИО" FontSize="18"/>
                             <TextBlock Text="{Binding FullName}" FontSize="16" Foreground="DarkGray"/>
                             <TextBlock Text="Телефон" FontSize="18"/>
@@ -114,14 +110,14 @@
             </TabItem>
             <TabItem Name="WaterTypes" Width="180">
                 <TabItem.Header>
-                    <TextBox Text="Наименование товара"/>
+                    <TextBlock Text="Наименование товара"/>
                 </TabItem.Header>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="300"/>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="WaterTypeListView" ItemsSource="{Binding WaterTypes}" SelectedItem="{Binding SelectedWater}">
+                    <ListView x:Name="WaterTypeListView" ItemsSource="{Binding WaterTypes}" SelectedItem="{Binding SelectedWaterType}">
                         <ListView.View>
                             <GridView>
                                 <GridViewColumn Header="Наименование" Width="150" DisplayMemberBinding="{Binding Path=Name}"/>
@@ -135,7 +131,7 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="40"/>
                         </Grid.RowDefinitions>
-                        <StackPanel Grid.Column="1" Background="AliceBlue" DataContext="{Binding SelectedWater}">
+                        <StackPanel Grid.Column="1" Margin="5" Background="AliceBlue" DataContext="{Binding SelectedWaterType}">
                             <TextBlock Text="Информация о товаре" FontSize="18" FontWeight="Bold"/>
                             <TextBlock Text="Наименование" FontSize="18"/>
                             <TextBlock Text="{Binding Name}" FontSize="16" Foreground="DarkGray"/>

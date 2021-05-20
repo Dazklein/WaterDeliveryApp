@@ -20,11 +20,11 @@ namespace WaterDeliveryApp.ViewModelPath
 
         }
 
+        public static int tempIdOrder { get; set; }
+
         public static List<WaterList>  WaterList { get; set; }
 
-        public static Clients Client { get; set; }
-
-        /*private Clients _client;
+        private Clients _client = new Domain.Clients();
         public Clients Client 
         {
             get 
@@ -36,10 +36,50 @@ namespace WaterDeliveryApp.ViewModelPath
                 _client = value;
                 NotifyPropertyChanged("Client");
             }
-        }*/
-        public static Orders Order { get; set; }
-        public static WaterTypes WaterType { get; set; }
-        public static Clients SelectedClient { get; set; }
+        }
+
+        private Orders _order = new Orders();
+
+        public Orders Order
+        {
+            get 
+            {
+                return _order; 
+            }
+            set {
+                _order = value;
+                NotifyPropertyChanged("Order");
+            }
+        }
+
+        private WaterTypes _waterType = new Domain.WaterTypes();
+
+        public WaterTypes WaterType
+        {
+            get 
+            { 
+                return _waterType; 
+            }
+            set 
+            { 
+                _waterType = value;
+                NotifyPropertyChanged("WaterType");
+            }
+        }
+
+        private Clients _selectedClient = new Domain.Clients();
+
+        public Clients SelectedClient
+        {
+            get { return _selectedClient; }
+            set 
+            { 
+                _selectedClient = value;
+                NotifyPropertyChanged("SelectedClient");
+            }
+        }
+
+
         private List<Clients> _clients = Data.GetClients();
 
         public List<Clients> Clients
@@ -52,7 +92,18 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
-        public static WaterTypes SelectedWater { get; set; }
+        private WaterTypes _selectedWaterType = new Domain.WaterTypes();
+
+        public WaterTypes SelectedWaterType
+        {
+            get { return _selectedWaterType; }
+            set
+            {
+                _selectedWaterType = value;
+                NotifyPropertyChanged("SelectedWaterType");
+            }
+        }
+
         private List<WaterTypes> _waterTypes = Data.GetWaterTypes();
 
         public List<WaterTypes> WaterTypes
@@ -65,7 +116,18 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
-        public static ViewOrders SelectedOrder { get; set; }
+        private ViewOrders _selectedOrder = new Domain.ViewOrders();
+
+        public ViewOrders SelectedOrder
+        {
+            get { return _selectedOrder; }
+            set
+            {
+                _selectedOrder = value;
+                NotifyPropertyChanged("SelectedOrder");
+            }
+        }
+
         private List<ViewOrders> _viewOrders = Data.GetViewOrders();
 
         public List<ViewOrders> ViewOrders
@@ -77,6 +139,31 @@ namespace WaterDeliveryApp.ViewModelPath
                 NotifyPropertyChanged("ViewOrders");
             }
         }
+
+        private DateTime _dateDelivery;
+
+        public DateTime DateDelivery
+        {
+            get { return _dateDelivery; }
+            set 
+            { 
+                _dateDelivery = value;
+                NotifyPropertyChanged("DateDelivery");
+            }
+        }
+
+        private int _countWater;
+
+        public int CountWater
+        {
+            get { return _countWater; }
+            set
+            {
+                _countWater = value;
+                NotifyPropertyChanged("CountWater");
+            }
+        }
+
 
         #region Команды открытия окон
 
@@ -115,6 +202,8 @@ namespace WaterDeliveryApp.ViewModelPath
             { 
                 return _addOrderWnd ?? new RelayCommand(obj =>
                 {
+                    
+
                     AddOrderWndMethod();
                 });
             }
@@ -159,6 +248,28 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
+        private RelayCommand _addOrderWaterWnd;
+
+        public RelayCommand AddOrderWaterWnd
+        {
+            get
+            {
+                return _addOrderWaterWnd ?? new RelayCommand(obj =>
+                {
+                    Window wnd = obj as Window;
+                    Orders newOrder = new Orders()
+                    {
+                        ClientId = SelectedClient.ClientId,
+                        DeliveryTime = DateDelivery,
+                        IsDelivered = false
+                    };
+                    tempIdOrder = Data.AddOrder(newOrder);
+                    AddOrderWaterWndMethod();
+                    wnd.Close();
+                });
+            }
+        }
+
         private void AddClientWndMethod()
         {
             CreateNewClient createNewClient = new CreateNewClient();
@@ -193,6 +304,12 @@ namespace WaterDeliveryApp.ViewModelPath
         {
             EditTypeWater editTypeWater = new EditTypeWater();
             SetCenterPositionAndOpen(editTypeWater);
+        }
+
+        private void AddOrderWaterWndMethod()
+        {
+            AddOrderWater addOrderWater = new AddOrderWater();
+            SetCenterPositionAndOpen(addOrderWater);
         }
 
         #endregion
@@ -238,8 +355,9 @@ namespace WaterDeliveryApp.ViewModelPath
                     }
                     if (isValid)
                     {
+                        Clients newClient = new Clients(Client.FirstName, Client.LastName, Client.Patronymic, Client.Phone, Client.Adress);
 
-                        resultStr = Data.AddClient(Client);
+                        resultStr = Data.AddClient(newClient);
                         UpdateView();
 
                         ShowMessage(resultStr);
@@ -293,11 +411,11 @@ namespace WaterDeliveryApp.ViewModelPath
                         SetRedBlockControll(wnd, "Name");
                         isValid = false;
                     }
-                    /*if (WaterType.Cost == 0 || WaterType.Cost.Replace(" ", "").Length == 0)
+                    if (WaterType.Cost == 0)
                     {
-                        SetRedBlockControll(wnd, "FirstName");
+                        SetRedBlockControll(wnd, "Cost");
                         isValid = false;
-                    }*/
+                    }
                     if (WaterType.Description == null || WaterType.Description.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "Description");
@@ -329,27 +447,30 @@ namespace WaterDeliveryApp.ViewModelPath
                     Window wnd = obj as Window;
                     string resultStr = "";
                     bool isValid = true;
-                    if (Client.LastName == null || Client.LastName.Replace(" ", "").Length == 0)
+
+                    Clients updClient = SelectedClient;
+
+                    if (updClient.LastName == null || updClient.LastName.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "LastName");
                         isValid = false;
                     }
-                    if (Client.FirstName == null || Client.FirstName.Replace(" ", "").Length == 0)
+                    if (updClient.FirstName == null || updClient.FirstName.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "FirstName");
                         isValid = false;
                     }
-                    if (Client.Patronymic == null || Client.Patronymic.Replace(" ", "").Length == 0)
+                    if (updClient.Patronymic == null || updClient.Patronymic.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "Patronymic");
                         isValid = false;
                     }
-                    if (Client.Phone == null || Client.Phone.Replace(" ", "").Length == 0)
+                    if (updClient.Phone == null || updClient.Phone.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "Phone");
                         isValid = false;
                     }
-                    if (Client.Adress == null || Client.Adress.Replace(" ", "").Length == 0)
+                    if (updClient.Adress == null || updClient.Adress.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "Adress");
                         isValid = false;
@@ -357,7 +478,7 @@ namespace WaterDeliveryApp.ViewModelPath
                     if (isValid)
                     {
 
-                        resultStr = Data.EditClient(Client);
+                        resultStr = Data.EditClient(updClient);
                         UpdateView();
 
                         ShowMessage(resultStr);
@@ -407,24 +528,27 @@ namespace WaterDeliveryApp.ViewModelPath
                     Window wnd = obj as Window;
                     string resultStr = "";
                     bool isValid = true;
-                    if (WaterType.Name == null || WaterType.Name.Replace(" ", "").Length == 0)
+
+                    WaterTypes updWaterType = SelectedWaterType;
+
+                    if (updWaterType.Name == null || updWaterType.Name.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "Name");
                         isValid = false;
                     }
-                    /*if (WaterType.Cost == 0 || WaterType.Cost.Replace(" ", "").Length == 0)
+                    if (updWaterType.Cost == 0)
                     {
-                        SetRedBlockControll(wnd, "FirstName");
+                        SetRedBlockControll(wnd, "Cost");
                         isValid = false;
-                    }*/
-                    if (WaterType.Description == null || WaterType.Description.Replace(" ", "").Length == 0)
+                    }
+                    if (updWaterType.Description == null || updWaterType.Description.Replace(" ", "").Length == 0)
                     {
                         SetRedBlockControll(wnd, "Description");
                         isValid = false;
                     }
                     if (isValid)
                     {
-                        resultStr = Data.EditWaterType(WaterType);
+                        resultStr = Data.EditWaterType(updWaterType);
                         UpdateView();
 
                         ShowMessage(resultStr);
@@ -435,6 +559,26 @@ namespace WaterDeliveryApp.ViewModelPath
             }
         }
 
+        private RelayCommand _addOrderWater;
+
+        public RelayCommand AddOrderWater
+        {
+            get
+            {
+                return _addOrderWater ?? new RelayCommand(obj =>
+                {
+                    Window wnd = obj as Window;
+                    string resultStr = "";
+
+                    resultStr = Data.AddOrderWaterRelation(tempIdOrder, SelectedWaterType.WaterTypeId, CountWater);
+                    
+                    UpdateView();
+
+                    ShowMessage(resultStr);
+                    SetNullValuesToProperties();
+                });
+            }
+        }
         #endregion
 
         private RelayCommand _closeWindow;

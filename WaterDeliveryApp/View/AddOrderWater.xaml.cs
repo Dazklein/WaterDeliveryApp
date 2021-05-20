@@ -11,21 +11,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using WaterDeliveryApp.ViewModelPath;
 
 namespace WaterDeliveryApp.View
 {
     /// <summary>
-    /// Логика взаимодействия для WaterTypeList.xaml
+    /// Логика взаимодействия для AddOrderWater.xaml
     /// </summary>
-    public partial class WaterTypeList : Window
+    public partial class AddOrderWater : Window
     {
-        public static ListView WaterTypesListView;
-        public WaterTypeList()
+        public AddOrderWater()
         {
             InitializeComponent();
-            DataContext = new ViewModel();
-            WaterTypesListView = WaterTypeListView;
+            DataContext = new ViewModelPath.ViewModel();
         }
     }
 }

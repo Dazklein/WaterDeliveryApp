@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp.View" xmlns:viewmodelpath="clr-namespace:WaterDeliveryApp.ViewModelPath" d:DataContext="{d:DesignInstance Type=viewmodelpath:ViewModel}"
         mc:Ignorable="d"
-        Title="Редактирование товара" Height="400" Width="300">
+        Title="Редактирование товара" MinHeight="400" MinWidth="400" Height="400" Width="400"
+        Name="EditWaterTypeWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -15,23 +16,25 @@
         <StackPanel Grid.Row="0" Background="LightSkyBlue">
             <TextBlock Text="Редактирование товара" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="10, 10" DataContext="{Binding SelectedWater}">
+        <StackPanel Grid.Row="1" Margin="10, 10" DataContext="{Binding SelectedWaterType}">
             <TextBlock Text="Наименование" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Name}"/>
+            <TextBox Name="Name" FontSize="16" Text="{Binding Name}"/>
             <TextBlock Text="Цена" FontSize="16"/>
-            <TextBox FontSize="16" Text="{Binding Cost}"/>
+            <TextBox Name="Cost" FontSize="16" Text="{Binding Cost}"/>
             <TextBlock Text="Описание" FontSize="16"/>
-            <TextBox FontSize="16" MinHeight="100" Text="{Binding Description}"/>
+            <TextBox Name="Description" FontSize="16" MinHeight="100" Text="{Binding Description}"/>
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Добавить" Margin="5"
-                    Command="{Binding EditWaterType}"/>
+            <Button Grid.Column="0" Content="Изменить" Margin="5"
+                    Command="{Binding EditWaterType}"
+                    CommandParameter="{Binding ElementName=EditWaterTypeWnd}"/>
             <Button Grid.Column="1" Content="Отмена" Margin="5"
-                    Command="{Binding CloseWindow}"/>
+                    Command="{Binding CloseWindow}"
+                    CommandParameter="{Binding ElementName=EditWaterTypeWnd}"/>
         </Grid>
     </Grid>
 </Window>

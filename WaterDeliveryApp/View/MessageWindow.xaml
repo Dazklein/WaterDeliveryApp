@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp.View"
         mc:Ignorable="d"
-        Title="" Height="160" Width="200">
+        Title="Уведомление" Height="160" Width="200" ResizeMode="NoResize">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

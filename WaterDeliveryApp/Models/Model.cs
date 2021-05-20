@@ -19,14 +19,7 @@ namespace WaterDeliveryApp.Domain
         public string Adress { get; set; }
         public int ActiveOrdersCount { get; set; }
         public int OrdersCount { get; set; }
-
-        private string _fullName;
-
-        public string FullName
-        {
-            get { return _fullName; }
-            set { _fullName = LastName + " " + FirstName + " " + Patronymic; }
-        }
+        public string FullName { get; set; }
 
         public Clients()
         {
@@ -39,6 +32,7 @@ namespace WaterDeliveryApp.Domain
             Patronymic = patronymic;
             Phone = phone;
             Adress = adress;
+            FullName = lastName + " " + firstName + " " + patronymic;
         }
     }
 

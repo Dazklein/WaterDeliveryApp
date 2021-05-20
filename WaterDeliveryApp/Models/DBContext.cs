@@ -16,7 +16,8 @@ namespace WaterDeliveryApp.Domain
 
         public ApplicationDBContext()
         {
-            Database.EnsureCreated();
+            /*Database.EnsureDeleted();
+            Database.EnsureCreated();*/
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp.View" xmlns:viewmodelpath="clr-namespace:WaterDeliveryApp.ViewModelPath" d:DataContext="{d:DesignInstance Type=viewmodelpath:ViewModel}"
         mc:Ignorable="d"
-        Title="Редактирование клиента" Height="350" Width="300">
+        Title="Редактирование клиента" MinHeight="380" MinWidth="340" Height="380" Width="340"
+        Name="EditClientWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="40"/>
@@ -32,10 +33,12 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Добавить" Margin="5"
-                    Command="{Binding EditClient}"/>
+            <Button Grid.Column="0" Content="Изменить" Margin="5"
+                    Command="{Binding EditClient}"
+                    CommandParameter="{Binding ElementName=EditClientWnd}"/>
             <Button Grid.Column="1" Content="Отмена" Margin="5"
-                    Command="{Binding CloseWindow}"/>
+                    Command="{Binding CloseWindow}"
+                    CommandParameter="{Binding ElementName=EditClientWnd}"/>
         </Grid>
     </Grid>
 </Window>

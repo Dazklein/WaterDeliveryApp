@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WaterDeliveryApp.View"
+        xmlns:local="clr-namespace:WaterDeliveryApp.View" xmlns:viewmodelpath="clr-namespace:WaterDeliveryApp.ViewModelPath" d:DataContext="{d:DesignInstance Type=viewmodelpath:ViewModel}"
         mc:Ignorable="d"
-        Title="Формирование заказа" MinHeight="300" MinWidth="300">
+        Title="Формирование заказа" MinHeight="250" MinWidth="300" Height="250" Width="300"
+        Name="AddOrderWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -17,26 +18,22 @@
         </StackPanel>
         <StackPanel Grid.Row="1" Margin="10, 10">
             <TextBlock Text="Клиент" FontSize="16"/>
-            <ComboBox Name="Client" FontSize="16" />
+            <ComboBox ItemsSource="{Binding Clients}" DisplayMemberPath="FullName" SelectedValue="{Binding SelectedClient.ClientId}" SelectedValuePath="ClientId" Name="Client" FontSize="16" />
             <TextBlock Text="Время доставки" FontSize="16"/>
-            <DatePicker Name="DeliveryTime" FontSize="16" />
-            <StackPanel Orientation="Horizontal" Background="#eeff" Margin="0, 10">
-                <Button Width="30" Height="30" HorizontalAlignment="Left">
-                    <Path Data="M0.5,0 L0.5,1 M0,0.5 L1,0.5"
-                      StrokeThickness="6"
-                      Stretch="Fill"
-                      Stroke="DarkSlateGray" />
-                </Button>
-                <TextBlock Text="Список товаров" FontSize="20" Margin="10, 0"/>
-            </StackPanel>
+            <DatePicker SelectedDate="{Binding DateDelivery}"  Name="DeliveryTime" FontSize="16" />
+            
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Добавить" Margin="5"/>
-            <Button Grid.Column="1" Content="Отмена" Margin="5"/>
+            <Button Grid.Column="0" Content="Добавить" Margin="5"
+                    Command="{Binding AddOrderWaterWnd}"
+                    CommandParameter="{Binding ElementName=AddOrderWnd}"/>
+            <Button Grid.Column="1" Content="Отмена" Margin="5"
+                    Command="{Binding CloseWindow}"
+                    CommandParameter="{Binding ElementName=AddOrderWnd}"/>
         </Grid>
     </Grid>
 </Window>

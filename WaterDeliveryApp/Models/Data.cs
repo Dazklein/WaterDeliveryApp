@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WaterDeliveryApp.Domain;
+using WaterDeliveryApp.View;
 
 namespace WaterDeliveryApp.Models
 {
@@ -18,9 +19,9 @@ namespace WaterDeliveryApp.Models
                     return db.Clients.ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                MessageWindow wnd = new MessageWindow(ex.Message);
                 throw;
             }
         }
@@ -34,9 +35,9 @@ namespace WaterDeliveryApp.Models
                     return db.WaterTypes.ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                MessageWindow wnd = new MessageWindow(ex.Message);
                 throw;
             }
         }
@@ -50,57 +51,60 @@ namespace WaterDeliveryApp.Models
                     return db.Orders.ToList();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                MessageWindow wnd = new MessageWindow(ex.Message);
                 throw;
             }
         }
-
+        
         public static List<ViewOrders> GetViewOrders()
         {
             try
             {
                 using (ApplicationDBContext db = new ApplicationDBContext())
                 {
-                    return (from orderWaters in db.OrderWaters
-                            join water in db.WaterTypes on orderWaters.WaterTypeId equals water.WaterTypeId
-                            join order in db.Orders on orderWaters.OrderId equals order.OrderId
-                            join client in db.Clients on order.ClientId equals client.ClientId
-                            group new { client, water, order } by new
-                            {
-                                client.FullName,
-                                client.Phone,
-                                client.Adress,
-                                water.Name,
-                                order.DeliveryTime,
-                                order.IsDelivered
-                            } into g
-                            select new ViewOrders()
-                            {
-                                FullName = g.Key.FullName,
-                                Phone = g.Key.Phone,
-                                Adress = g.Key.Adress,
-                                NameWater = g.Key.Name,
-                                SumDelivery = g.Sum(x => x.water.Cost),
-                                DeliveryTime = g.Key.DeliveryTime,
-                                isDelivered = g.Key.IsDelivered
-                            }).ToList();
+                    List<ViewOrders> query = (from orderWaters in db.OrderWaters
+                                              join water in db.WaterTypes on orderWaters.WaterTypeId equals water.WaterTypeId
+                                              join order in db.Orders on orderWaters.OrderId equals order.OrderId
+                                              join client in db.Clients on order.ClientId equals client.ClientId
+                                              group new { client, water, order } by new
+                                              {
+                                                  client.FullName,
+                                                  client.Phone,
+                                                  client.Adress,
+                                                  water.Name,
+                                                  order.DeliveryTime,
+                                                  order.IsDelivered
+                                              } into g
+                                              select new ViewOrders()
+                                              {
+                                                  FullName = g.Key.FullName,
+                                                  Phone = g.Key.Phone,
+                                                  Adress = g.Key.Adress,
+                                                  NameWater = g.Key.Name,
+                                                  SumDelivery = g.Sum(x => x.water.Cost),
+                                                  DeliveryTime = g.Key.DeliveryTime,
+                                                  isDelivered = g.Key.IsDelivered
+                                              }).ToList();
+                    return query;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageWindow wnd = new MessageWindow(ex.Message);
                 throw;
             }
         }
-
+        
         public static string AddClient(Clients client)
         {
+            Clients newClient = new Clients(client.FirstName, client.LastName, client.Patronymic, client.Phone, client.Adress);
             try
             {
                 using (ApplicationDBContext db = new ApplicationDBContext())
                 {
-                    db.Clients.Add(client);
+                    db.Clients.Add(newClient);
                     db.SaveChanges();
                 }
                 return "Успех";
@@ -136,29 +140,36 @@ namespace WaterDeliveryApp.Models
                 {
                     db.Orders.Add(order);
                     db.SaveChanges();
-                    return db.Orders.Last().OrderId;
+                    return order.OrderId;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                MessageWindow wnd = new MessageWindow(ex.Message);
                 throw;
             }
         }
 
-        public static string AddOrderWaterRelation(List<OrderWater> orderWaters)
+        public static string AddOrderWaterRelation(int orderId, int waterId, int countWater)
         {
+            OrderWater entity = new OrderWater()
+            {
+                OrderId = orderId,
+                WaterTypeId = waterId,
+                Count = countWater
+            };
+
             try
             {
                 using (ApplicationDBContext db = new ApplicationDBContext())
                 {
-                    db.OrderWaters.AddRange(orderWaters);
+                    db.OrderWaters.Add(entity);
                     db.SaveChanges();
                     return "Успех";
                 }
             }
             catch (Exception ex)
             {
-
                 return ex.Message;
             }
         }

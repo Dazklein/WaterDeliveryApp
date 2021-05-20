@@ -1,12 +1,12 @@
-﻿<Window x:Class="WaterDeliveryApp.View.CreateNewTypeWater"
+﻿<Window x:Class="WaterDeliveryApp.View.AddOrderWater"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp.View" xmlns:viewmodelpath="clr-namespace:WaterDeliveryApp.ViewModelPath" d:DataContext="{d:DesignInstance Type=viewmodelpath:ViewModel}"
         mc:Ignorable="d"
-        Title="Создание товара" MinHeight="400" MinWidth="400" Height="400" Width="400"
-        Name="AddWaterTypeWnd">
+        Title="Добавление товара" MinHeight="250" MinWidth="300" Height="250" Width="300"
+        Name="AddOrderWaterWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -14,15 +14,13 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Background="LightSkyBlue">
-            <TextBlock Text="Создание товара" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="32" FontWeight="Bold"/>
+            <TextBlock Text="Формирование заказа" HorizontalAlignment="Center" FontSize="26" FontWeight="Bold" Margin="0, 5"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Margin="10, 10" DataContext="{Binding WaterType}">
-            <TextBlock Text="Наименование" FontSize="16"/>
-            <TextBox Name="Name" FontSize="16" Text="{Binding Name}"/>
-            <TextBlock Text="Цена" FontSize="16"/>
-            <TextBox Name="Cost" FontSize="16" Text="{Binding Cost}"/>
-            <TextBlock Text="Описание" FontSize="16"/>
-            <TextBox Name="Description" FontSize="16" MinHeight="100" Text="{Binding Description}"/>
+        <StackPanel Grid.Row="1" Margin="10, 10">
+            <TextBlock Text="Выберите товар" FontSize="16"/>
+            <ComboBox ItemsSource="{Binding WaterTypes}" DisplayMemberPath="Name" SelectedValue="{Binding SelectedWaterType.WaterTypeId}" SelectedValuePath="WaterTypeId" Name="WaterType" FontSize="16" />
+            <TextBlock Text="Количество" FontSize="16"/>
+            <TextBox Text="{Binding CountWater}" Name="Count" FontSize="16" />
         </StackPanel>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -30,11 +28,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Content="Добавить" Margin="5"
-                    Command="{Binding AddWaterType}"
-                    CommandParameter="{Binding ElementName=AddWaterTypeWnd}"/>
+                    Command="{Binding AddOrderWater}"
+                    CommandParameter="{Binding ElementName=AddOrderWaterWnd}"/>
             <Button Grid.Column="1" Content="Отмена" Margin="5"
                     Command="{Binding CloseWindow}"
-                    CommandParameter="{Binding ElementName=AddWaterTypeWnd}"/>
+                    CommandParameter="{Binding ElementName=AddOrderWaterWnd}"/>
         </Grid>
     </Grid>
 </Window>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WaterDeliveryApp.View"
         mc:Ignorable="d"
-        Title="Редактирование заказа" MinHeight="300" MinWidth="300">
+        Title="Редактирование заказа" MinHeight="300" MinWidth="300" Height="300" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
